@@ -10,6 +10,7 @@ use Dominasys\PagBank\Support\Configuration;
 use Dominasys\PagBank\Support\Response;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 
 final readonly class PagBankClient
 {
@@ -93,7 +94,9 @@ final readonly class PagBankClient
     }
 
     /**
-     * @param  array<string, mixed>  $options
+     * @param array<string, mixed> $options
+     *
+     * @throws GuzzleException
      */
     private function request(
         string $baseUri,
