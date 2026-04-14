@@ -1,5 +1,5 @@
 {
-    "name": "dominasys/sdk-pagbank-php",
+    "name": "dominasys/pagbank-php-sdk",
     "description": "SDK PHP da DominaSys para integrar com a API do PagBank.",
     "type": "library",
     "license": "MIT",
