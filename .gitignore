@@ -1,3 +1,11 @@
 /vendor
 /.phpunit.cache
+/.phpunit.result.cache
+/.idea/
+/.vscode/
 /.idea/workspace.xml
+/coverage/
+.DS_Store
+Thumbs.db
+*.log
+*.tmp

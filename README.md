@@ -11,12 +11,13 @@ Este pacote nasce com uma regra simples: o core não depende de Laravel. A ideia
 - módulo `Connect` para fluxo OAuth base;
 - módulo `Accounts` para criação e consulta de conta;
 - módulo `Orders` para criação, consulta e pagamento de pedidos;
+- módulo `Charges` para consulta, captura e cancelamento de cobranças;
 - resposta e erro padronizados para a API;
-- base pronta para crescer para cobranças, checkout, cartões, webhooks e recorrência.
+- base pronta para crescer para checkout, cartões, webhooks e recorrência.
 
 ## Escopo do v1
 
-O pacote já cobre o núcleo de `Connect`, `Accounts` e `Orders`:
+O pacote já cobre o núcleo de `Connect`, `Accounts`, `Orders` e `Charges`:
 
 - criar aplicação;
 - consultar aplicação;
@@ -30,11 +31,17 @@ O pacote já cobre o núcleo de `Connect`, `Accounts` e `Orders`:
 - consultar pedido;
 - pagar pedido.
 
+- consultar cobrança;
+- capturar cobrança;
+- cancelar cobrança.
+
 Ainda não entram no v1:
 
 - Connect via SMS;
 - Connect challenge;
-- cobranças avulsas;
+- sessão 3DS;
+- consulta de taxas de transação;
+- validação e armazenamento de cartão;
 - checkout;
 - cartões;
 - recorrência;
@@ -67,6 +74,9 @@ use Dominasys\PagBank\Orders\Dto\OrderItemData;
 use Dominasys\PagBank\Orders\Dto\OrderPhoneData;
 use Dominasys\PagBank\Orders\Dto\OrderShippingData;
 use Dominasys\PagBank\Orders\Enums\OrderCustomerPhoneType;
+use Dominasys\PagBank\Charges\Dto\ChargeAmountData;
+use Dominasys\PagBank\Charges\Dto\ChargeCaptureData;
+use Dominasys\PagBank\Charges\Dto\ChargeCancelData;
 use Dominasys\PagBank\Support\Credentials;
 use Dominasys\PagBank\Support\Endpoints;
 use Dominasys\PagBank\PagBank;
@@ -196,13 +206,34 @@ $order = $orders->createOrder(
 $orderId = $order->id();
 ```
 
+### Cobranças
+
+```php
+$charges = $sdk->charges();
+
+$charge = $charges->getCharge('CHAR_123');
+
+$captured = $charges->captureCharge(
+    'CHAR_123',
+    new ChargeCaptureData(
+        amount: new ChargeAmountData(150099),
+    ),
+);
+
+$charges->cancelCharge(
+    'CHAR_123',
+    new ChargeCancelData(
+        amount: new ChargeAmountData(150099),
+    ),
+);
+```
+
 ## Roadmap
 
-Depois do núcleo de `Connect`, `Accounts` e `Orders`, o pacote evolui para:
+Depois do núcleo de `Connect`, `Accounts`, `Orders` e `Charges`, o pacote evolui para:
 
 - Connect via SMS;
 - Connect challenge;
-- Charges;
 - Checkout;
 - cartões salvos;
 - recorrência;
