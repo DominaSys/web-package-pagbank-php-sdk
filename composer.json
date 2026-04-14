@@ -1,0 +1,24 @@
+{
+    "name": "dominasys/sdk-pagbank-php",
+    "description": "SDK PHP da DominaSys para integrar com a API do PagBank.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "guzzlehttp/guzzle": "^7.9"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dominasys\\PagBank\\": "src/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
