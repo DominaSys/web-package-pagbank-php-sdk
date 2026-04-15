@@ -237,6 +237,8 @@ $charges->cancelCharge(
 
 ### Cartões
 
+O fluxo de cartões foi separado do núcleo de cobrança. Quando o seu backend já recebe os dados brutos do cartão, você pode criptografar tudo server-side com `cards()->encryptCard(...)` e só depois enviar o `encryptedCard` para armazenamento/tokenização.
+
 ```php
 $cards = $sdk->cards();
 
