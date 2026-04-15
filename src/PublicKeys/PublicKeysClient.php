@@ -9,7 +9,7 @@ use Dominasys\PagBank\PublicKeys\Response\PublicKeyResponse;
 
 final readonly class PublicKeysClient
 {
-    private const RESOURCE_TYPE_CARD = 'card';
+    private const string RESOURCE_TYPE_CARD = 'card';
 
     public function __construct(
         private PagBankClient $client,
