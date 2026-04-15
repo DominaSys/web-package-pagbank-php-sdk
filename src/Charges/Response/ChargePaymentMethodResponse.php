@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Dominasys\PagBank\Charges\Response;
 
+use Dominasys\PagBank\Cards\Response\CardResponse;
+
 final class ChargePaymentMethodResponse extends ChargeResponseNode
 {
     public static function fromArray(array $payload): self
@@ -36,11 +38,11 @@ final class ChargePaymentMethodResponse extends ChargeResponseNode
         return $this->stringValue('soft_descriptor');
     }
 
-    public function card(): ?ChargeCardResponse
+    public function card(): ?CardResponse
     {
         $payload = $this->nestedPayload('card');
 
-        return $payload !== null ? ChargeCardResponse::fromArray($payload) : null;
+        return $payload !== null ? CardResponse::fromArray($payload) : null;
     }
 
     public function tokenData(): ?ChargeTokenDataResponse

@@ -15,7 +15,6 @@ use Dominasys\PagBank\Charges\Dto\ChargeCancelSplitRoundingLiableData;
 use Dominasys\PagBank\Charges\Dto\ChargeCancelSplitsData;
 use Dominasys\PagBank\Charges\Enums\ChargeCancelSplitMethod;
 use Dominasys\PagBank\Charges\Response\ChargeAmountResponse;
-use Dominasys\PagBank\Charges\Response\ChargeCardResponse;
 use Dominasys\PagBank\Charges\Response\ChargePaymentMethodResponse;
 use Dominasys\PagBank\Charges\Response\ChargePaymentResponse;
 use Dominasys\PagBank\Charges\Response\ChargeResponse;
@@ -175,4 +174,5 @@ final class ChargesValueObjectsTest extends TestCase
         self::assertSame('GOOGLE_PAY', $response->paymentMethod()?->tokenData()?->wallet());
         self::assertSame('THREEDS', $response->paymentMethod()?->authenticationMethod()?->type());
     }
+
 }

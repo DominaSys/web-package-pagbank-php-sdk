@@ -10,14 +10,15 @@ Este pacote nasce com uma regra simples: o core não depende de Laravel. A ideia
 - client HTTP centralizado para a API do PagBank;
 - módulo `Connect` para fluxo OAuth base;
 - módulo `Accounts` para criação e consulta de conta;
+- módulo `Cards` para validação e armazenamento de cartão;
 - módulo `Orders` para criação, consulta e pagamento de pedidos;
 - módulo `Charges` para consulta, captura e cancelamento de cobranças;
 - resposta e erro padronizados para a API;
-- base pronta para crescer para checkout, cartões, webhooks e recorrência.
+- base pronta para crescer para checkout, webhooks e recorrência.
 
 ## Escopo do v1
 
-O pacote já cobre o núcleo de `Connect`, `Accounts`, `Orders` e `Charges`:
+O pacote já cobre o núcleo de `Connect`, `Accounts`, `Cards`, `Orders` e `Charges`:
 
 - criar aplicação;
 - consultar aplicação;
@@ -35,13 +36,16 @@ O pacote já cobre o núcleo de `Connect`, `Accounts`, `Orders` e `Charges`:
 - capturar cobrança;
 - cancelar cobrança.
 
+O fluxo de cartões armazenados fica em `Cards`:
+
+- validar e armazenar cartão.
+
 Ainda não entram no v1:
 
 - Connect via SMS;
 - Connect challenge;
 - sessão 3DS;
 - consulta de taxas de transação;
-- validação e armazenamento de cartão;
 - checkout;
 - cartões;
 - recorrência;
@@ -74,6 +78,8 @@ use Dominasys\PagBank\Orders\Dto\OrderItemData;
 use Dominasys\PagBank\Orders\Dto\OrderPhoneData;
 use Dominasys\PagBank\Orders\Dto\OrderShippingData;
 use Dominasys\PagBank\Orders\Enums\OrderCustomerPhoneType;
+use Dominasys\PagBank\Cards\Dto\CardHolderData;
+use Dominasys\PagBank\Cards\Dto\CardStoreData;
 use Dominasys\PagBank\Charges\Dto\ChargeAmountData;
 use Dominasys\PagBank\Charges\Dto\ChargeCaptureData;
 use Dominasys\PagBank\Charges\Dto\ChargeCancelData;
@@ -228,14 +234,27 @@ $charges->cancelCharge(
 );
 ```
 
+### Cartões
+
+```php
+$cards = $sdk->cards();
+
+$storedCard = $cards->validateAndStoreCard(
+    CardStoreData::encrypted(
+        'encrypted-value',
+        new CardHolderData('Jose da Silva', '12345678909'),
+    ),
+);
+```
+
 ## Roadmap
 
-Depois do núcleo de `Connect`, `Accounts`, `Orders` e `Charges`, o pacote evolui para:
+Depois do núcleo de `Connect`, `Accounts`, `Cards`, `Orders` e `Charges`, o pacote evolui para:
 
 - Connect via SMS;
 - Connect challenge;
 - Checkout;
-- cartões salvos;
+- gestão ampliada de cartões;
 - recorrência;
 - webhooks;
 - bridge Laravel opcional, se fizer sentido.

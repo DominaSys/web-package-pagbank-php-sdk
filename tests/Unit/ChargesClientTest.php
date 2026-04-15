@@ -166,6 +166,20 @@ final class ChargesClientTest extends TestCase
         $sdk->charges()->getCharge('CHAR_123');
     }
 
+    public function testChargesClientDoesNotExposeCardTokenization(): void
+    {
+        $history = [];
+
+        $sdk = $this->makeSdkWithHistory(
+            history: $history,
+            response: new Response(200, ['Content-Type' => 'application/json'], json_encode([
+                'id' => 'CHAR_123',
+            ], JSON_THROW_ON_ERROR)),
+        );
+
+        self::assertFalse(method_exists($sdk->charges(), 'validateAndStoreCard'));
+    }
+
     /**
      * @param  array<int, array<string, mixed>>  $history
      */

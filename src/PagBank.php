@@ -6,6 +6,7 @@ namespace Dominasys\PagBank;
 
 use Dominasys\PagBank\Client\PagBankClient;
 use Dominasys\PagBank\Accounts\AccountsClient;
+use Dominasys\PagBank\Cards\CardsClient;
 use Dominasys\PagBank\Charges\ChargesClient;
 use Dominasys\PagBank\Orders\OrdersClient;
 use Dominasys\PagBank\Connect\ConnectClient;
@@ -44,6 +45,11 @@ final class PagBank
     public function accounts(): AccountsClient
     {
         return new AccountsClient($this->client());
+    }
+
+    public function cards(): CardsClient
+    {
+        return new CardsClient($this->client());
     }
 
     public function charges(): ChargesClient
