@@ -52,6 +52,14 @@ class ApiException extends PagBankException
      */
     private static function messageFromPayload(array $payload, int $statusCode): string
     {
+        if (isset($payload['error_messages']) && is_array($payload['error_messages']) && $payload['error_messages'] !== []) {
+            $message = self::messageFromErrorMessages($payload['error_messages']);
+
+            if ($message !== '') {
+                return $message;
+            }
+        }
+
         foreach (['message', 'error_description', 'error', 'title', 'detail'] as $key) {
             if (isset($payload[$key]) && is_string($payload[$key]) && $payload[$key] !== '') {
                 return $payload[$key];
@@ -59,5 +67,50 @@ class ApiException extends PagBankException
         }
 
         return sprintf('The PagBank API request failed with HTTP %d.', $statusCode);
+    }
+
+    /**
+     * @param  array<int, mixed>  $errorMessages
+     */
+    private static function messageFromErrorMessages(array $errorMessages): string
+    {
+        $messages = [];
+
+        foreach ($errorMessages as $errorMessage) {
+            if (! is_array($errorMessage)) {
+                continue;
+            }
+
+            $parts = [];
+
+            if (isset($errorMessage['code']) && is_string($errorMessage['code']) && $errorMessage['code'] !== '') {
+                $parts[] = $errorMessage['code'];
+            }
+
+            if (isset($errorMessage['description']) && is_string($errorMessage['description']) && $errorMessage['description'] !== '') {
+                $parts[] = $errorMessage['description'];
+            }
+
+            if (isset($errorMessage['parameter_name']) && is_string($errorMessage['parameter_name']) && $errorMessage['parameter_name'] !== '') {
+                $parts[] = sprintf('(%s)', $errorMessage['parameter_name']);
+            }
+
+            if (isset($errorMessage['errors']) && is_array($errorMessage['errors']) && $errorMessage['errors'] !== []) {
+                $details = array_values(array_filter(
+                    $errorMessage['errors'],
+                    static fn ($detail): bool => is_string($detail) && $detail !== '',
+                ));
+
+                if ($details !== []) {
+                    $parts[] = sprintf(': %s', implode('; ', $details));
+                }
+            }
+
+            if ($parts !== []) {
+                $messages[] = implode(' ', $parts);
+            }
+        }
+
+        return implode('; ', $messages);
     }
 }
