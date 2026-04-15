@@ -9,6 +9,7 @@ use Dominasys\PagBank\Accounts\AccountsClient;
 use Dominasys\PagBank\Cards\CardEncryptor;
 use Dominasys\PagBank\Cards\CardsClient;
 use Dominasys\PagBank\Charges\ChargesClient;
+use Dominasys\PagBank\PublicKeys\PublicKeysClient;
 use Dominasys\PagBank\Orders\OrdersClient;
 use Dominasys\PagBank\Connect\ConnectClient;
 use Dominasys\PagBank\Connect\AuthorizationUrlBuilder;
@@ -51,6 +52,11 @@ final class PagBank
     public function cards(): CardsClient
     {
         return new CardsClient($this->client(), new CardEncryptor());
+    }
+
+    public function publicKeys(): PublicKeysClient
+    {
+        return new PublicKeysClient($this->client());
     }
 
     public function charges(): ChargesClient

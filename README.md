@@ -10,6 +10,7 @@ Este pacote nasce com uma regra simples: o core não depende de Laravel. A ideia
 - client HTTP centralizado para a API do PagBank;
 - módulo `Connect` para fluxo OAuth base;
 - módulo `Accounts` para criação e consulta de conta;
+- módulo `PublicKeys` para criar, consultar e renovar chaves públicas;
 - módulo `Cards` para validação e armazenamento de cartão;
 - módulo `Orders` para criação, consulta e pagamento de pedidos;
 - módulo `Charges` para consulta, captura e cancelamento de cobranças;
@@ -18,7 +19,7 @@ Este pacote nasce com uma regra simples: o core não depende de Laravel. A ideia
 
 ## Escopo do v1
 
-O pacote já cobre o núcleo de `Connect`, `Accounts`, `Cards`, `Orders` e `Charges`:
+O pacote já cobre o núcleo de `Connect`, `Accounts`, `PublicKeys`, `Cards`, `Orders` e `Charges`:
 
 - criar aplicação;
 - consultar aplicação;
@@ -28,6 +29,9 @@ O pacote já cobre o núcleo de `Connect`, `Accounts`, `Cards`, `Orders` e `Char
 - revogar `access_token`;
 - criar conta;
 - consultar conta;
+- criar chave pública;
+- consultar chave pública;
+- alterar chave pública;
 - criar pedido;
 - consultar pedido;
 - pagar pedido.
@@ -235,9 +239,19 @@ $charges->cancelCharge(
 );
 ```
 
+### Chaves públicas
+
+```php
+$publicKeys = $sdk->publicKeys();
+
+$publicKey = $publicKeys->createCardPublicKey();
+$currentPublicKey = $publicKeys->getCardPublicKey();
+$updatedPublicKey = $publicKeys->updateCardPublicKey();
+```
+
 ### Cartões
 
-O fluxo de cartões foi separado do núcleo de cobrança. Quando o seu backend já recebe os dados brutos do cartão, você pode criptografar tudo server-side com `cards()->encryptCard(...)` e só depois enviar o `encryptedCard` para armazenamento/tokenização.
+O fluxo de cartões foi separado do núcleo de cobrança. Quando o seu backend já recebe os dados brutos do cartão, você pode criptografar tudo server-side com `cards()->encryptCard(...)` usando a chave pública obtida em `publicKeys()` e só depois enviar o `encryptedCard` para armazenamento/tokenização.
 
 ```php
 $cards = $sdk->cards();
@@ -261,7 +275,7 @@ $storedCard = $cards->validateAndStoreCard(
 
 ## Roadmap
 
-Depois do núcleo de `Connect`, `Accounts`, `Cards`, `Orders` e `Charges`, o pacote evolui para:
+Depois do núcleo de `Connect`, `Accounts`, `PublicKeys`, `Cards`, `Orders` e `Charges`, o pacote evolui para:
 
 - Connect via SMS;
 - Connect challenge;
