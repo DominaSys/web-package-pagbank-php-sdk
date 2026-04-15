@@ -78,6 +78,7 @@ use Dominasys\PagBank\Orders\Dto\OrderItemData;
 use Dominasys\PagBank\Orders\Dto\OrderPhoneData;
 use Dominasys\PagBank\Orders\Dto\OrderShippingData;
 use Dominasys\PagBank\Orders\Enums\OrderCustomerPhoneType;
+use Dominasys\PagBank\Cards\Dto\CardEncryptData;
 use Dominasys\PagBank\Cards\Dto\CardHolderData;
 use Dominasys\PagBank\Cards\Dto\CardStoreData;
 use Dominasys\PagBank\Charges\Dto\ChargeAmountData;
@@ -239,9 +240,18 @@ $charges->cancelCharge(
 ```php
 $cards = $sdk->cards();
 
+$encrypted = $cards->encryptCard(new CardEncryptData(
+    publicKey: $_ENV['PAGBANK_PUBLIC_KEY'],
+    number: '4242424242424242',
+    expMonth: 12,
+    expYear: 2030,
+    holder: 'Jose da Silva',
+    securityCode: '123',
+));
+
 $storedCard = $cards->validateAndStoreCard(
     CardStoreData::encrypted(
-        'encrypted-value',
+        $encrypted->encryptedCard(),
         new CardHolderData('Jose da Silva', '12345678909'),
     ),
 );

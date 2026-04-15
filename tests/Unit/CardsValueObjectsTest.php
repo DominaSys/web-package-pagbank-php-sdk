@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+use Dominasys\PagBank\Cards\Dto\CardEncryptData;
 use Dominasys\PagBank\Cards\Dto\CardHolderData;
 use Dominasys\PagBank\Cards\Dto\CardStoreData;
+use Dominasys\PagBank\Cards\Response\CardEncryptionError;
+use Dominasys\PagBank\Cards\Response\CardEncryptionResult;
 use Dominasys\PagBank\Cards\Response\CardResponse;
 use Dominasys\PagBank\Support\Response as PagBankResponse;
 use GuzzleHttp\Psr7\Response as PsrResponse;
@@ -40,6 +43,41 @@ final class CardsValueObjectsTest extends TestCase
             '123',
             new CardHolderData('Jose da Silva', '12345678909'),
         )->toArray());
+    }
+
+    public function testEncryptDataCarriesRawFields(): void
+    {
+        $data = new CardEncryptData(
+            publicKey: 'public-key',
+            number: '4242424242424242',
+            expMonth: 12,
+            expYear: 2030,
+            holder: 'Jose da Silva',
+            securityCode: '123',
+        );
+
+        self::assertSame('public-key', $data->publicKey);
+        self::assertSame('4242424242424242', $data->number);
+        self::assertSame(12, $data->expMonth);
+        self::assertSame(2030, $data->expYear);
+        self::assertSame('123', $data->securityCode);
+        self::assertSame('Jose da Silva', $data->holder);
+    }
+
+    public function testEncryptionResultAndErrorShape(): void
+    {
+        $result = new CardEncryptionResult(
+            'encrypted-value',
+            [
+                new CardEncryptionError('INVALID_NUMBER', 'invalid field `number`. You must pass a value between 13 and 19 digits'),
+            ],
+        );
+
+        self::assertSame('encrypted-value', $result->encryptedCard());
+        self::assertTrue($result->hasErrors());
+        self::assertCount(1, $result->errors());
+        self::assertSame('INVALID_NUMBER', $result->errors()[0]->code);
+        self::assertSame('invalid field `number`. You must pass a value between 13 and 19 digits', $result->errors()[0]->message);
     }
 
     public function testCardResponseExposesTypedAccessors(): void

@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use Dominasys\PagBank\Cards\Dto\CardEncryptData;
 use Dominasys\PagBank\Cards\Dto\CardHolderData;
 use Dominasys\PagBank\Cards\Dto\CardStoreData;
+use Dominasys\PagBank\Cards\Response\CardEncryptionResult;
 use Dominasys\PagBank\Cards\Response\CardResponse;
 use Dominasys\PagBank\Environment;
 use Dominasys\PagBank\Support\Configuration;
@@ -20,6 +22,40 @@ use PHPUnit\Framework\TestCase;
 
 final class CardsClientTest extends TestCase
 {
+    public function testEncryptsCardDataOnTheBackend(): void
+    {
+        $history = [];
+        [$publicKey, $privateKey] = $this->generateKeyPair();
+
+        $sdk = $this->makeSdkWithHistory(
+            history: $history,
+            response: new Response(200, ['Content-Type' => 'application/json'], json_encode([
+                'id' => 'CARD_123',
+            ], JSON_THROW_ON_ERROR)),
+        );
+
+        $result = $sdk->cards()->encryptCard(new CardEncryptData(
+            publicKey: $publicKey,
+            number: '4242424242424242',
+            expMonth: 12,
+            expYear: 2030,
+            holder: 'José da Silva',
+            securityCode: '123',
+        ));
+
+        self::assertInstanceOf(CardEncryptionResult::class, $result);
+        self::assertFalse($result->hasErrors());
+        self::assertNotNull($result->encryptedCard());
+        self::assertCount(0, $history);
+
+        $ciphertext = base64_decode($result->encryptedCard(), true);
+        self::assertNotFalse($ciphertext);
+        self::assertTrue(openssl_private_decrypt($ciphertext, $decrypted, $privateKey, OPENSSL_PKCS1_PADDING));
+
+        self::assertSame('4242424242424242;123;12;2030;Jose da Silva;', preg_replace('/\d+$/', '', $decrypted));
+        self::assertMatchesRegularExpression('/^4242424242424242;123;12;2030;Jose da Silva;\d+$/', $decrypted);
+    }
+
     public function testValidatesAndStoresEncryptedCard(): void
     {
         $history = [];
@@ -62,6 +98,37 @@ final class CardsClientTest extends TestCase
         ], json_decode((string) $history[0]['request']->getBody(), true, 512, JSON_THROW_ON_ERROR));
     }
 
+    public function testReportsValidationErrorsForInvalidCardData(): void
+    {
+        $history = [];
+
+        $sdk = $this->makeSdkWithHistory(
+            history: $history,
+            response: new Response(200, ['Content-Type' => 'application/json'], json_encode([
+                'id' => 'CARD_123',
+            ], JSON_THROW_ON_ERROR)),
+        );
+
+        $result = $sdk->cards()->encryptCard(new CardEncryptData(
+            publicKey: '',
+            number: '123',
+            expMonth: 0,
+            expYear: 1800,
+            holder: '123',
+            securityCode: '12',
+        ));
+
+        self::assertTrue($result->hasErrors());
+        self::assertSame([
+            'INVALID_NUMBER',
+            'INVALID_SECURITY_CODE',
+            'INVALID_EXPIRATION_MONTH',
+            'INVALID_EXPIRATION_YEAR',
+            'INVALID_PUBLIC_KEY',
+            'INVALID_HOLDER',
+        ], array_map(static fn ($error): string => $error->code, $result->errors()));
+    }
+
     public function testValidatesAndStoresPciCard(): void
     {
         $history = [];
@@ -101,6 +168,31 @@ final class CardsClientTest extends TestCase
                 'tax_id' => '12345678909',
             ],
         ], json_decode((string) $history[0]['request']->getBody(), true, 512, JSON_THROW_ON_ERROR));
+    }
+
+    /**
+     * @param  array<int, array<string, mixed>>  $history
+     *
+     * @return array{0: string, 1: string}
+     */
+    private function generateKeyPair(): array
+    {
+        $privateKey = openssl_pkey_new([
+            'private_key_bits' => 2048,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA,
+        ]);
+
+        self::assertNotFalse($privateKey);
+
+        $exported = null;
+        self::assertTrue(openssl_pkey_export($privateKey, $exported));
+
+        $details = openssl_pkey_get_details($privateKey);
+        self::assertIsArray($details);
+        self::assertArrayHasKey('key', $details);
+        self::assertIsString($details['key']);
+
+        return [$details['key'], $exported];
     }
 
     /**
