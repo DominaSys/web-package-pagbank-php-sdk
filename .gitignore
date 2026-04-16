@@ -3,6 +3,7 @@
 /.phpunit.result.cache
 /.idea/
 /.vscode/
+build/
 /.idea/workspace.xml
 /coverage/
 .DS_Store
