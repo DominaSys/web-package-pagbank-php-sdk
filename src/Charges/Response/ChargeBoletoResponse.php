@@ -11,6 +11,21 @@ final class ChargeBoletoResponse extends ChargeResponseNode
         return self::fromArrayPayload($payload);
     }
 
+    public function id(): ?string
+    {
+        return $this->stringValue('id');
+    }
+
+    public function barcode(): ?string
+    {
+        return $this->stringValue('barcode');
+    }
+
+    public function formattedBarcode(): ?string
+    {
+        return $this->stringValue('formatted_barcode');
+    }
+
     public function dueDate(): ?string
     {
         return $this->stringValue('due_date');
