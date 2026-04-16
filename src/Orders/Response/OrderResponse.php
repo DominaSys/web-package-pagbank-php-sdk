@@ -53,10 +53,10 @@ final class OrderResponse extends OrderResponseNode
     public function items(): array
     {
         return array_values(array_map(
-            static fn (array $payload): OrderItemResponse => OrderItemResponse::fromArray($payload),
+            OrderItemResponse::fromArray(...),
             array_filter(
                 $this->listPayload('items'),
-                static fn (mixed $payload): bool => is_array($payload),
+                is_array(...),
             ),
         ));
     }
@@ -84,10 +84,10 @@ final class OrderResponse extends OrderResponseNode
     public function qrCodes(): array
     {
         return array_values(array_map(
-            static fn (array $payload): OrderQrCodeResponse => OrderQrCodeResponse::fromArray($payload),
+            OrderQrCodeResponse::fromArray(...),
             array_filter(
                 $this->listPayload('qr_codes'),
-                static fn (mixed $payload): bool => is_array($payload),
+                is_array(...),
             ),
         ));
     }
@@ -98,10 +98,10 @@ final class OrderResponse extends OrderResponseNode
     public function charges(): array
     {
         return array_values(array_map(
-            static fn (array $payload): OrderChargeResponse => OrderChargeResponse::fromArray($payload),
+            OrderChargeResponse::fromArray(...),
             array_filter(
                 $this->listPayload('charges'),
-                static fn (mixed $payload): bool => is_array($payload),
+                is_array(...),
             ),
         ));
     }
@@ -112,10 +112,10 @@ final class OrderResponse extends OrderResponseNode
     public function links(): array
     {
         return array_values(array_map(
-            static fn (array $payload): OrderLinkResponse => OrderLinkResponse::fromArray($payload),
+            OrderLinkResponse::fromArray(...),
             array_filter(
                 $this->listPayload('links'),
-                static fn (mixed $payload): bool => is_array($payload),
+                is_array(...),
             ),
         ));
     }

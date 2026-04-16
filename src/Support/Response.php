@@ -7,17 +7,17 @@ namespace Dominasys\PagBank\Support;
 use JsonException;
 use Psr\Http\Message\ResponseInterface;
 
-final class Response
+final readonly class Response
 {
     /**
      * @param  array<string, array<int, string>>  $headers
      * @param  array<string, mixed>  $payload
      */
     public function __construct(
-        private readonly int $statusCode,
-        private readonly array $headers,
-        private readonly array $payload,
-        private readonly string $body,
+        private int $statusCode,
+        private array $headers,
+        private array $payload,
+        private string $body,
     ) {
     }
 

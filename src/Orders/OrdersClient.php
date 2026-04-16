@@ -49,4 +49,9 @@ final readonly class OrdersClient
             'json' => $data->toArray(),
         ]));
     }
+
+    public function cancelOrder(string $orderId): OrderResponse
+    {
+        return OrderResponse::fromResponse($this->client->requestApi('POST', '/orders/' . rawurlencode($orderId) . '/cancel'));
+    }
 }

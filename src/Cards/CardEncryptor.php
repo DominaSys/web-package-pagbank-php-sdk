@@ -12,10 +12,15 @@ use Normalizer;
 final readonly class CardEncryptor
 {
     private const string ERROR_NUMBER = 'INVALID_NUMBER';
+
     private const string ERROR_SECURITY_CODE = 'INVALID_SECURITY_CODE';
+
     private const string ERROR_EXP_MONTH = 'INVALID_EXPIRATION_MONTH';
+
     private const string ERROR_EXP_YEAR = 'INVALID_EXPIRATION_YEAR';
+
     private const string ERROR_PUBLIC_KEY = 'INVALID_PUBLIC_KEY';
+
     private const string ERROR_HOLDER = 'INVALID_HOLDER';
 
     public function encrypt(CardEncryptData $data): CardEncryptionResult
@@ -53,7 +58,7 @@ final readonly class CardEncryptor
             ]);
         }
 
-        return new CardEncryptionResult(base64_encode($encrypted));
+        return new CardEncryptionResult(base64_encode((string) $encrypted));
     }
 
     /**

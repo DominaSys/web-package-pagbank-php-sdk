@@ -151,6 +151,29 @@ final class OrdersClientTest extends TestCase
         self::assertSame('https://sandbox.api.pagseguro.com/orders/ORDE_123/pay', (string) $history[0]['request']->getUri());
     }
 
+    public function testCancelsOrder(): void
+    {
+        $history = [];
+
+        $sdk = $this->makeSdkWithHistory(
+            history: $history,
+            configuration: Configuration::make(
+                endpoints: new Endpoints(environment: Environment::Sandbox),
+                credentials: new Credentials(bearerToken: 'bearer-token'),
+                transport: new Transport(),
+            ),
+            response: new Response(200, ['Content-Type' => 'application/json'], json_encode([
+                'id' => 'ORDE_123',
+            ], JSON_THROW_ON_ERROR)),
+        );
+
+        $sdk->orders()->cancelOrder('ORDE_123');
+
+        self::assertCount(1, $history);
+        self::assertSame('POST', $history[0]['request']->getMethod());
+        self::assertSame('https://sandbox.api.pagseguro.com/orders/ORDE_123/cancel', (string) $history[0]['request']->getUri());
+    }
+
     public function testMapsOrderValidationErrorsToDomainException(): void
     {
         $sdk = PagBank::make(

@@ -7,6 +7,7 @@ namespace Dominasys\PagBank\Cards\Dto;
 final readonly class CardStoreData
 {
     private const string MODE_ENCRYPTED = 'encrypted';
+
     private const string MODE_PCI = 'pci';
 
     private function __construct(

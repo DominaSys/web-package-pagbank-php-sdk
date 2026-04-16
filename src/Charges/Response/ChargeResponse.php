@@ -83,7 +83,7 @@ final class ChargeResponse extends ChargeResponseNode
     {
         return array_values(array_filter(
             $this->listPayload('links'),
-            static fn (mixed $payload): bool => is_array($payload),
+            is_array(...),
         ));
     }
 }

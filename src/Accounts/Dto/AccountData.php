@@ -21,7 +21,7 @@ final readonly class AccountData
             throw new InvalidArgumentException('The account email cannot be empty.');
         }
 
-        if (($this->type === AccountType::Seller || $this->type === AccountType::Enterprise) && $this->company === null) {
+        if (($this->type === AccountType::Seller || $this->type === AccountType::Enterprise) && !$this->company instanceof \Dominasys\PagBank\Accounts\Dto\AccountCompanyData) {
             throw new InvalidArgumentException('The company data is required for SELLER and ENTERPRISE accounts.');
         }
 

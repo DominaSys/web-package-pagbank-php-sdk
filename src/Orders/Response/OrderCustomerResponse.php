@@ -32,10 +32,10 @@ final class OrderCustomerResponse extends OrderResponseNode
     public function phones(): array
     {
         return array_values(array_map(
-            static fn (array $payload): OrderPhoneResponse => OrderPhoneResponse::fromArray($payload),
+            OrderPhoneResponse::fromArray(...),
             array_filter(
                 $this->listPayload('phones'),
-                static fn (mixed $payload): bool => is_array($payload),
+                is_array(...),
             ),
         ));
     }

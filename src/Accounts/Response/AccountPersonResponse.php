@@ -44,10 +44,10 @@ final class AccountPersonResponse extends AccountResponseNode
     public function phones(): array
     {
         return array_values(array_map(
-            static fn (array $payload): AccountPhoneResponse => AccountPhoneResponse::fromArray($payload),
+            AccountPhoneResponse::fromArray(...),
             array_filter(
                 $this->listPayload('phones'),
-                static fn (mixed $payload): bool => is_array($payload),
+                is_array(...),
             ),
         ));
     }
