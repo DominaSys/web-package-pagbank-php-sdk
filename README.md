@@ -1,4 +1,8 @@
-# dominasys/pagbank-php-sdk
+# Pagbank PHP SDK
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/dominasys/filament-location.svg?style=flat-square)](https://packagist.org/packages/dominasys/filament-location)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/dominasys/web-package-pagbank-php-sdk/run-tests.yml?branch=master&label=tests&style=flat-square)](https://github.com/dominasys/web-package-pagbank-php-sdk/actions?query=workflow%3A%22Run+Tests%22+branch%3Amaster)
+[![Total Downloads](https://img.shields.io/packagist/dt/dominasys/filament-location.svg?style=flat-square)](https://packagist.org/packages/dominasys/filament-location)
 
 SDK PHP puro para integrar aplicações com a API do PagBank.
 
