@@ -6,7 +6,7 @@ use Dominasys\PagBank\Support\Response;
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use PHPUnit\Framework\Assert;
 
-test('parses json response', function (): void {
+it('parses json response', function (): void {
     $response = Response::fromPsrResponse(new PsrResponse(
         200,
         ['Content-Type' => 'application/json'],
@@ -21,7 +21,7 @@ test('parses json response', function (): void {
     Assert::assertSame('DominaPay', $response->toArray()['name']);
 });
 
-test('preserves raw body when response is not json', function (): void {
+it('preserves raw body when response is not json', function (): void {
     $response = Response::fromPsrResponse(new PsrResponse(
         500,
         ['Content-Type' => 'text/plain'],

@@ -8,7 +8,7 @@ use Dominasys\PagBank\Support\Response;
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use PHPUnit\Framework\Assert;
 
-test('maps error messages payload to validation exception message', function (): void {
+it('maps error messages payload to validation exception message', function (): void {
     $response = Response::fromPsrResponse(new PsrResponse(
         400,
         ['Content-Type' => 'application/json'],

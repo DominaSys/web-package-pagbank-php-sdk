@@ -22,7 +22,7 @@ use Dominasys\PagBank\Support\Response as PagBankResponse;
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use PHPUnit\Framework\Assert;
 
-test('capture and cancel payloads convert to api shape', function (): void {
+it('capture and cancel payloads convert to api shape', function (): void {
     $capture = new ChargeCaptureData(
         amount: new ChargeAmountData(150099),
     );
@@ -84,7 +84,7 @@ test('capture and cancel payloads convert to api shape', function (): void {
     ], $cancel->toArray());
 });
 
-test('charge response exposes typed accessors', function (): void {
+it('charge response exposes typed accessors', function (): void {
     $response = ChargeResponse::fromResponse(PagBankResponse::fromPsrResponse(new PsrResponse(
         200,
         ['Content-Type' => 'application/json'],

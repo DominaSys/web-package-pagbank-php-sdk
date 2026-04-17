@@ -11,7 +11,7 @@ use Dominasys\PagBank\Support\Response as PagBankResponse;
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use PHPUnit\Framework\Assert;
 
-test('create application data converts to api payload', function (): void {
+it('create application data converts to api payload', function (): void {
     $data = new CreateApplicationData(
         name: 'DominaPay',
         description: 'Plataforma de pagamentos',
@@ -29,7 +29,7 @@ test('create application data converts to api payload', function (): void {
     ], $data->toArray());
 });
 
-test('application response exposes typed accessors', function (): void {
+it('application response exposes typed accessors', function (): void {
     $response = ApplicationResponse::fromResponse(PagBankResponse::fromPsrResponse(new PsrResponse(
         201,
         ['Content-Type' => 'application/json'],
@@ -44,7 +44,7 @@ test('application response exposes typed accessors', function (): void {
     Assert::assertSame(201, $response->statusCode());
 });
 
-test('authorization url data builds query payload', function (): void {
+it('authorization url data builds query payload', function (): void {
     $data = new AuthorizationUrlData(
         clientId: 'client-123',
         redirectUri: 'https://domina.example/callback',
@@ -61,7 +61,7 @@ test('authorization url data builds query payload', function (): void {
     ], $data->toQuery());
 });
 
-test('token response exposes typed accessors', function (): void {
+it('token response exposes typed accessors', function (): void {
     $response = TokenResponse::fromResponse(PagBankResponse::fromPsrResponse(new PsrResponse(
         200,
         ['Content-Type' => 'application/json'],

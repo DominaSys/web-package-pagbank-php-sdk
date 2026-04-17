@@ -7,7 +7,7 @@ use Dominasys\PagBank\Support\Response as PagBankResponse;
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use PHPUnit\Framework\Assert;
 
-test('public key response parses json payload', function (): void {
+it('public key response parses json payload', function (): void {
     $response = PublicKeyResponse::fromResponse(PagBankResponse::fromPsrResponse(new PsrResponse(
         200,
         ['Content-Type' => 'application/json'],
@@ -27,7 +27,7 @@ test('public key response parses json payload', function (): void {
     Assert::assertSame('2026-04-14T12:10:00Z', $response->updatedAt());
 });
 
-test('public key response falls back to raw body', function (): void {
+it('public key response falls back to raw body', function (): void {
     $response = PublicKeyResponse::fromResponse(PagBankResponse::fromPsrResponse(new PsrResponse(
         201,
         ['Content-Type' => 'text/plain'],
