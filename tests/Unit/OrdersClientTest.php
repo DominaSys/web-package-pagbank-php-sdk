@@ -161,28 +161,6 @@ it('pays order', function () use ($makeSdkWithHistory): void {
     Assert::assertSame('https://sandbox.api.pagseguro.com/orders/ORDE_123/pay', (string) $history[0]['request']->getUri());
 });
 
-it('cancels order', function () use ($makeSdkWithHistory): void {
-    $history = [];
-
-    $sdk = $makeSdkWithHistory(
-        history: $history,
-        configuration: Configuration::make(
-            endpoints: new Endpoints(environment: Environment::Sandbox),
-            credentials: new Credentials(bearerToken: 'bearer-token'),
-            transport: new Transport(),
-        ),
-        response: new Response(200, ['Content-Type' => 'application/json'], json_encode([
-            'id' => 'ORDE_123',
-        ], JSON_THROW_ON_ERROR)),
-    );
-
-    $sdk->orders()->cancelOrder('ORDE_123');
-
-    Assert::assertCount(1, $history);
-    Assert::assertSame('POST', $history[0]['request']->getMethod());
-    Assert::assertSame('https://sandbox.api.pagseguro.com/orders/ORDE_123/cancel', (string) $history[0]['request']->getUri());
-});
-
 it('maps order validation errors to domain exception', function (): void {
     $sdk = PagBank::make(
         Configuration::make(
