@@ -11,17 +11,17 @@ use Normalizer;
 
 final readonly class CardEncryptor
 {
-    private const string ERROR_NUMBER = 'INVALID_NUMBER';
+    private const ERROR_NUMBER = 'INVALID_NUMBER';
 
-    private const string ERROR_SECURITY_CODE = 'INVALID_SECURITY_CODE';
+    private const ERROR_SECURITY_CODE = 'INVALID_SECURITY_CODE';
 
-    private const string ERROR_EXP_MONTH = 'INVALID_EXPIRATION_MONTH';
+    private const ERROR_EXP_MONTH = 'INVALID_EXPIRATION_MONTH';
 
-    private const string ERROR_EXP_YEAR = 'INVALID_EXPIRATION_YEAR';
+    private const ERROR_EXP_YEAR = 'INVALID_EXPIRATION_YEAR';
 
-    private const string ERROR_PUBLIC_KEY = 'INVALID_PUBLIC_KEY';
+    private const ERROR_PUBLIC_KEY = 'INVALID_PUBLIC_KEY';
 
-    private const string ERROR_HOLDER = 'INVALID_HOLDER';
+    private const ERROR_HOLDER = 'INVALID_HOLDER';
 
     public function encrypt(CardEncryptData $data): CardEncryptionResult
     {
