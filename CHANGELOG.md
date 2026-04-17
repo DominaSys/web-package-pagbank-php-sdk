@@ -2,6 +2,21 @@
 
 All notable changes to `dominasys/pagbank-php-sdk` will be documented in this file.
 
+## v0.1.1 - 2026-04-17
+
+Patch release for the first version of `dominasys/pagbank-php-sdk`.
+
+### Fixed
+
+- Removed the unsupported `cancelOrder()` operation from the `Orders` client.
+- Removed the obsolete unit test covering order cancellation.
+- Updated the README badges to reference the correct package name.
+
+### Notes
+
+- This release keeps the package compatible with PHP 8.2.
+- The test suite remains based on Pest.
+
 ## v0.1.0 - 2026-04-17
 
 First public release of `dominasys/pagbank-php-sdk`.
@@ -9,7 +24,9 @@ First public release of `dominasys/pagbank-php-sdk`.
 ### Included
 
 - PHP SDK for integrating with the PagBank API
+  
 - Clients for:
+  
   - `accounts`
   - `cards`
   - `charges`
@@ -18,11 +35,17 @@ First public release of `dominasys/pagbank-php-sdk`.
   - `public keys`
   
 - DTOs and value objects for request/response mapping
+  
 - Standardized API response and error handling
+  
 - Pest-based automated test suite
+  
 - GitHub Actions workflow for test automation
+  
 - Dependabot configuration for Composer and GitHub Actions
+  
 - Repository control files for contribution, security, and issue templates
+  
 
 ### Notes
 
