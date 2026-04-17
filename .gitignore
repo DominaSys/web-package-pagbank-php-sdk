@@ -1,10 +1,14 @@
 /vendor
+composer.lock
 /.phpunit.cache
 /.phpunit.result.cache
+/.rector.cache
 /.idea/
 /.vscode/
 build/
 /.idea/workspace.xml
+.codex
+composer.lock
 /coverage/
 .DS_Store
 Thumbs.db
