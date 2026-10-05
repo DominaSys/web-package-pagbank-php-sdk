@@ -13,8 +13,7 @@ final readonly class OrdersClient
 {
     public function __construct(
         private PagBankClient $client,
-    ) {
-    }
+    ) {}
 
     public function createOrder(CreateOrderData $data, ?string $idempotencyKey = null): OrderResponse
     {
@@ -43,9 +42,10 @@ final readonly class OrdersClient
         ]));
     }
 
-    public function payOrder(string $orderId, OrderPaymentData $data): OrderResponse
+    public function payOrder(string $orderId, OrderPaymentData $data, ?string $idempotencyKey = null): OrderResponse
     {
         return OrderResponse::fromResponse($this->client->requestApi('POST', '/orders/' . rawurlencode($orderId) . '/pay', [
+            'headers' => $idempotencyKey === null ? [] : ['x-idempotency-key' => $idempotencyKey],
             'json' => $data->toArray(),
         ]));
     }

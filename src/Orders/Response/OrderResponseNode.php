@@ -11,8 +11,7 @@ abstract class OrderResponseNode
      */
     public function __construct(
         protected readonly array $payload,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array<string, mixed>  $payload
@@ -20,6 +19,12 @@ abstract class OrderResponseNode
     protected static function fromArrayPayload(array $payload): static
     {
         return new static($payload);
+    }
+
+    /** @return array<string, mixed> */
+    public function toArray(): array
+    {
+        return $this->payload;
     }
 
     protected function stringValue(string $key): ?string

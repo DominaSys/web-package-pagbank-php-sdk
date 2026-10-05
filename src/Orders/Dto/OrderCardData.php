@@ -19,8 +19,7 @@ final readonly class OrderCardData
         public ?OrderWalletData $wallet = null,
         public ?OrderTokenData $tokenData = null,
         public ?OrderAuthenticationMethodData $authenticationMethod = null,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, mixed>
@@ -54,10 +53,6 @@ final readonly class OrderCardData
 
         if ($this->tokenData instanceof OrderTokenData) {
             $payload['token_data'] = $this->tokenData->toArray();
-        }
-
-        if ($this->authenticationMethod instanceof OrderAuthenticationMethodData) {
-            $payload['authentication_method'] = $this->authenticationMethod->toArray();
         }
 
         return $payload;

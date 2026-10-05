@@ -12,7 +12,13 @@ final readonly class Endpoints
         public Environment $environment = Environment::Sandbox,
         public ?string $apiBaseUri = null,
         public ?string $connectBaseUri = null,
-    ) {
+        public ?string $sdkBaseUri = null,
+    ) {}
+
+    public function sdkBaseUri(): string
+    {
+        return $this->sdkBaseUri ?? ($this->environment === Environment::Sandbox
+            ? 'https://sandbox.sdk.pagseguro.com' : 'https://sdk.pagseguro.com');
     }
 
     public function apiBaseUri(): string

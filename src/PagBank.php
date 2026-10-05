@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Dominasys\PagBank;
 
-use Dominasys\PagBank\Client\PagBankClient;
 use Dominasys\PagBank\Accounts\AccountsClient;
 use Dominasys\PagBank\Cards\CardEncryptor;
 use Dominasys\PagBank\Cards\CardsClient;
 use Dominasys\PagBank\Charges\ChargesClient;
-use Dominasys\PagBank\PublicKeys\PublicKeysClient;
-use Dominasys\PagBank\Orders\OrdersClient;
-use Dominasys\PagBank\Connect\ConnectClient;
-use Dominasys\PagBank\Connect\AuthorizationUrlBuilder;
+use Dominasys\PagBank\Checkout\CheckoutClient;
+use Dominasys\PagBank\Client\PagBankClient;
 use Dominasys\PagBank\Connect\ApplicationClient;
+use Dominasys\PagBank\Connect\AuthorizationUrlBuilder;
+use Dominasys\PagBank\Connect\ConnectClient;
 use Dominasys\PagBank\Connect\TokenClient;
+use Dominasys\PagBank\Orders\OrdersClient;
+use Dominasys\PagBank\PublicKeys\PublicKeysClient;
 use Dominasys\PagBank\Support\Configuration;
 use GuzzleHttp\ClientInterface;
 
@@ -23,8 +24,7 @@ final class PagBank
     public function __construct(
         private readonly Configuration $configuration,
         private readonly ?ClientInterface $httpClient = null,
-    ) {
-    }
+    ) {}
 
     private ?PagBankClient $client = null;
 
@@ -51,7 +51,7 @@ final class PagBank
 
     public function cards(): CardsClient
     {
-        return new CardsClient($this->client(), new CardEncryptor());
+        return new CardsClient($this->client(), new CardEncryptor);
     }
 
     public function publicKeys(): PublicKeysClient
@@ -62,6 +62,11 @@ final class PagBank
     public function charges(): ChargesClient
     {
         return new ChargesClient($this->client());
+    }
+
+    public function checkout(): CheckoutClient
+    {
+        return new CheckoutClient($this->client());
     }
 
     public function orders(): OrdersClient

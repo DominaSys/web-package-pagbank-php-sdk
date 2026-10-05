@@ -16,8 +16,9 @@ final readonly class OrderPaymentMethodData
         public ?string $softDescriptor = null,
         public ?OrderCardData $card = null,
         public ?OrderBoletoData $boleto = null,
-    ) {
-    }
+        public ?OrderAuthenticationMethodData $authenticationMethod = null,
+        public ?OrderPixData $pix = null,
+    ) {}
 
     /**
      * @return array<string, mixed>
@@ -43,6 +44,14 @@ final readonly class OrderPaymentMethodData
 
         if ($this->boleto instanceof OrderBoletoData) {
             $payload['boleto'] = $this->boleto->toArray();
+        }
+
+        $authentication = $this->authenticationMethod ?? $this->card?->authenticationMethod;
+        if ($authentication !== null) {
+            $payload['authentication_method'] = $authentication->toArray();
+        }
+        if ($this->pix !== null) {
+            $payload['pix'] = $this->pix->toArray();
         }
 
         return $payload;

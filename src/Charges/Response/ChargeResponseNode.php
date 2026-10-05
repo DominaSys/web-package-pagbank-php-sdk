@@ -8,6 +8,12 @@ use Dominasys\PagBank\Support\ResponseNode as SupportResponseNode;
 
 abstract class ChargeResponseNode extends SupportResponseNode
 {
+    /** @return array<string, mixed> */
+    public function toArray(): array
+    {
+        return $this->payload;
+    }
+
     /**
      * @return array<int, mixed>
      */

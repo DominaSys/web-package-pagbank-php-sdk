@@ -17,12 +17,15 @@ final readonly class PagBankClient
     public function __construct(
         private Configuration $configuration,
         private ?ClientInterface $client = null,
-    ) {
+    ) {}
+
+    /** @param array<string, mixed> $options */
+    public function requestSdk(string $method, string $uri, array $options = []): Response
+    {
+        return $this->request($this->configuration->endpoints->sdkBaseUri(), $method, $uri, $options, true, false, []);
     }
 
-    /**
-     * @param  array<string, mixed>  $options
-     */
+    /** @param array<string, mixed> $options */
     public function requestApi(string $method, string $uri, array $options = []): Response
     {
         return $this->request(
@@ -94,7 +97,7 @@ final readonly class PagBankClient
     }
 
     /**
-     * @param array<string, mixed> $options
+     * @param  array<string, mixed>  $options
      *
      * @throws GuzzleException
      */
@@ -109,6 +112,7 @@ final readonly class PagBankClient
     ): Response {
         $options['base_uri'] = $baseUri;
         $options['http_errors'] = false;
+        $options['allow_redirects'] = false;
         $options['timeout'] = $this->configuration->transport->timeout;
         $options['connect_timeout'] = $this->configuration->transport->connectTimeout;
         $options['headers'] = $this->prepareHeaders($options['headers'] ?? [], $requireBearerToken, $requireConnectCredentials, $extraHeaders);
@@ -155,7 +159,7 @@ final readonly class PagBankClient
             return $this->client;
         }
 
-        return new Client();
+        return new Client;
     }
 
     private function requireClientId(): string
