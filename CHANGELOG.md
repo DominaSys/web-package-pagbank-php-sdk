@@ -2,6 +2,19 @@
 
 All notable changes to `dominasys/pagbank-php-sdk` will be documented in this file.
 
+## v1.0.0 - 2026-10-05
+
+Primeira versão estável 1.x do SDK PHP PagBank.
+
+- Consulta de taxas e opções de parcelamento pela API Fees.
+- Criação de sessões 3DS pelo host do Checkout SDK.
+- Serialização de juros do comprador, Pix e autenticação 3DS no objeto de pagamento.
+- Chave de idempotência no pagamento de pedidos existentes.
+- Validação de assinatura de webhook sobre o corpo original da notificação.
+- Acesso ao payload de pedidos e cobranças e correções no transporte HTTP.
+
+Validação: 50 testes aprovados, com 246 assertions.
+
 ## v0.1.1 - 2026-04-17
 
 Patch release for the first version of `dominasys/pagbank-php-sdk`.
