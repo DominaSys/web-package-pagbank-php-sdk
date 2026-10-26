@@ -69,6 +69,8 @@ O objetivo é evitar dependência de wrappers legados ou de intermediários de t
 composer require dominasys/pagbank-php-sdk
 ```
 
+Compatível com PHP 8.2 ou superior e Guzzle `^7.9 || ^8.0`. A matriz de testes verifica ambas as versões principais do Guzzle.
+
 ## Uso básico
 
 ```php
