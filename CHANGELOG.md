@@ -2,6 +2,10 @@
 
 All notable changes to `dominasys/pagbank-php-sdk` will be documented in this file.
 
+## v1.0.1 - 2026-10-26
+
+**Full Changelog**: https://github.com/DominaSys/web-package-pagbank-php-sdk/compare/v1.0.0...v1.0.1
+
 ## v1.0.0 - 2026-10-05
 
 Primeira versão estável 1.x do SDK PHP PagBank.
